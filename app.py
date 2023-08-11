@@ -8,10 +8,32 @@ from langchain import PromptTemplate, LLMChain
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory, ChatMessageHistory
 from langchain.schema import HumanMessage, AIMessage
+import streamlit.components.v1 as components
 
-st.set_page_config(layout="wide")
+# st.markdown(f"""
+#   <head>
+#     <link rel="stylesheet" type="text/css" href="./styles.css">
+#   </head>
+#   """
+#   ,unsafe_allow_html=True
+# )
 
-ClarifaiStreamlitCSS.insert_default_css(st)
+# components.html(f"""
+#   <head>
+#     <link rel="stylesheet" type="text/css" href="./styles.css">
+#   </head>
+#   """)
+
+with open('./styles.css') as f:
+  st.markdown(f"<style>{f.read()}</style>",unsafe_allow_html=True)
+
+# st.set_page_config(layout="wide")
+
+# ClarifaiStreamlitCSS.insert_default_css(st)
+
+
+# st.local_css("./styles.css")
+
 
 def load_pat():
   if 'CLARIFAI_PAT' not in st.secrets:
@@ -101,7 +123,6 @@ def chatbot():
       with st.spinner("Thinking..."):
         response = conversation.predict(input=message, chat_history=st.session_state["chat_history"])
         st.write(response)
-        # st.info(f"chat_history {conversation.memory}")
         message = {"role": "assistant", "content": response}
         st.session_state['chat_history'].append(message)
 
@@ -109,4 +130,5 @@ def chatbot():
 if "chosen_llm" in st.session_state.keys():
   show_previous_chats()
   chatbot()
-  
+
+
