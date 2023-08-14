@@ -104,6 +104,7 @@ def chatbot():
     with st.chat_message("assistant"):
       with st.spinner("Thinking..."):
         response = conversation.predict(input=message, chat_history=st.session_state["chat_history"])
+        # llama response format if different. It seems like human-ai chat examples are appended after the actual response.
         if st.session_state['chosen_llm'].find('lama') > -1:
           response = response.split('Human:',1)[0]
         st.write(response)
