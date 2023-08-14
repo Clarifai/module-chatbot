@@ -10,29 +10,11 @@ from langchain.memory import ConversationBufferMemory, ChatMessageHistory
 from langchain.schema import HumanMessage, AIMessage
 import streamlit.components.v1 as components
 
-# st.markdown(f"""
-#   <head>
-#     <link rel="stylesheet" type="text/css" href="./styles.css">
-#   </head>
-#   """
-#   ,unsafe_allow_html=True
-# )
-
-# components.html(f"""
-#   <head>
-#     <link rel="stylesheet" type="text/css" href="./styles.css">
-#   </head>
-#   """)
+st.set_page_config(layout="wide")
+ClarifaiStreamlitCSS.insert_default_css(st)
 
 with open('./styles.css') as f:
   st.markdown(f"<style>{f.read()}</style>",unsafe_allow_html=True)
-
-# st.set_page_config(layout="wide")
-
-# ClarifaiStreamlitCSS.insert_default_css(st)
-
-
-# st.local_css("./styles.css")
 
 
 def load_pat():
@@ -122,10 +104,12 @@ def chatbot():
     with st.chat_message("assistant"):
       with st.spinner("Thinking..."):
         response = conversation.predict(input=message, chat_history=st.session_state["chat_history"])
+        if st.session_state['chosen_llm'].find('lama') > -1:
+          response = response.split('Human:',1)[0]
         st.write(response)
         message = {"role": "assistant", "content": response}
         st.session_state['chat_history'].append(message)
-
+    st.write("\n***\n")
 
 if "chosen_llm" in st.session_state.keys():
   show_previous_chats()
