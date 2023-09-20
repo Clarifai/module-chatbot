@@ -1,5 +1,5 @@
 import streamlit as st
-from clarifai_utils.modules.css import ClarifaiStreamlitCSS
+from clarifai.modules.css import ClarifaiStreamlitCSS
 from langchain.llms import OpenAI
 from langchain.agents import AgentType, initialize_agent, load_tools
 from langchain.callbacks import StreamlitCallbackHandler
